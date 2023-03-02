@@ -85,10 +85,10 @@ function update() {
   });
 
   // Check if the score is high enough to win the game
-  // if (score.score == 30) {
-  //   score.stopTimer();
-  //   showGameOverScreen("success");
-  // }
+  if (score.score == 30) {
+    score.stopTimer();
+    showGameOverScreen("success");
+  }
 }
 
 // Draw the game objects
