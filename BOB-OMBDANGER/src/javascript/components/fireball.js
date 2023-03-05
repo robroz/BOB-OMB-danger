@@ -41,7 +41,7 @@ export function createFireBall(size, fireBallSpeed, fireBallColor) {
   return new Fireball(x, y, dx, dy,speed, radius, fireBallColor);
 }
 
-class Fireball {C
+export class Fireball {C
   constructor(x, y, dx, dy, speed, radius, Color) {
     this.x = x;
     this.y = y;

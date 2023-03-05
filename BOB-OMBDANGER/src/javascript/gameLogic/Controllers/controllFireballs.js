@@ -1,15 +1,15 @@
 //scoreThreshold = score at wich fireballs gets given properties. spawnRate = amount of fireballs that spawn in seconds. 
 const fireballControlls = [ 
-    { scoreThreshold: 0, spawnRate: 20 ,fireballSpeed:1, fireballRadius:10, fireballColor: "#000"},
-    { scoreThreshold: 5, spawnRate: 0 ,fireballSpeed:1, fireballRadius:10, fireballColor: "#000"},
-    { scoreThreshold: 10, spawnRate: 10 ,fireballSpeed:3, fireballRadius:10, fireballColor: "#000"},
-    { scoreThreshold: 12, spawnRate: 0 ,fireballSpeed:6, fireballRadius:10, fireballColor: "#000"},
-    { scoreThreshold: 14, spawnRate: 1 ,fireballSpeed:5, fireballRadius:300, fireballColor: "#000"},
-    { scoreThreshold: 15, spawnRate: 4 ,fireballSpeed:4, fireballRadius:10, fireballColor: "#000"},
-    { scoreThreshold: 18, spawnRate: 12 ,fireballSpeed:2, fireballRadius:11, fireballColor: "#000"},
-    { scoreThreshold: 22, spawnRate: 14 ,fireballSpeed:2, fireballRadius:9, fireballColor: "#000"},
-    { scoreThreshold: 25, spawnRate: 16 ,fireballSpeed:1.8, fireballRadius:7, fireballColor: "#000"},
-    { scoreThreshold: 28, spawnRate: 50 ,fireballSpeed:1, fireballRadius:100, fireballColor: "#000"},
+    { scoreThreshold: 0, spawnRate: 1, Speed:1, Radius:10, Color: "#000", customEffects: "null"},
+    { scoreThreshold: 5, spawnRate: 0, Speed:1, Radius:10,Color: "#000", customEffects: "null"},
+    { scoreThreshold: 10, spawnRate: 10, Speed:3, Radius:10, Color: "#000", customEffects: "null"},
+    { scoreThreshold: 12, spawnRate: 0, Speed:6, Radius:10, Color: "#000", customEffects: "null"},
+    { scoreThreshold: 14, spawnRate: 1, Speed:5, Radius:300, Color: "#000", customEffects: "null"},
+    { scoreThreshold: 15, spawnRate: 4, Speed:4, Radius:10, Color: "#000", customEffects: "null"},
+    { scoreThreshold: 18, spawnRate: 12, Speed:2, Radius:11, Color: "#000", customEffects: "null"},
+    { scoreThreshold: 22, spawnRate: 14, Speed:2, Radius:9, Color: "#000", customEffects: "null"},
+    { scoreThreshold: 25, spawnRate: 16, Speed:1.8, Radius:7, Color: "#000", customEffects: "null"},
+    { scoreThreshold: 27, spawnRate: 150, Speed:0.7, Radius:100, Color: '#000', customEffects: "randomColor"},
   ];
   
 export  function fireballControll(score) {
@@ -19,8 +19,5 @@ export  function fireballControll(score) {
         return fireballControlls[i];
       }
     }
-    
-    // Return the default controll 
-    return fireballSpawnRates[0].spawnRate;
   }
   

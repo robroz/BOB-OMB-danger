@@ -5,6 +5,9 @@ import { showStartScreen } from "./javascript/views/startscreen.js";
 import { showGameOverScreen } from "./javascript/views/gameoverscreen.js";
 import { Score } from "./javascript/gameLogic/score.js";
 import { fireballControll } from "./javascript/gameLogic/Controllers/controllFireballs.js";
+import { createHomingFireball } from "./javascript/components/homingFireball.js";
+import { HomingFireball } from "./javascript/components/homingFireball.js";
+import { homingFireballControll } from "./javascript/gameLogic/Controllers/controllHomingFireballs.js";
 
 export let animationId;
 
@@ -28,6 +31,7 @@ export const groundPos = {
 const bobomb = new Bobomb();
 const FireBallList = [];
 let lastFireballSpawnTime = 0;
+let lastHomingFireballSpawnTime = 0;
 let score = new Score();
 
 // Reset the game state (used when starting a new game)
@@ -55,41 +59,70 @@ export function startGameLoop() {
   animate();
 }
 
+
 // Update the game state
 function update() {
-  // Calculate the time since the last fireball was spawned
   const currentTime = Date.now() / 1000;
   const deltaTime = currentTime - lastFireballSpawnTime;
+  const fireball = fireballControll(score.score);
+  const homingFireball = homingFireballControll(score.score);
 
   // Spawn a new fireball if enough time has passed
-  if (deltaTime >= (1 / fireballControll(score.score).spawnRate)) {
-    FireBallList.push(createFireBall(fireballControll(score.score).fireballRadius, fireballControll(score.score).fireballSpeed, fireballControll(score.score).fireballColor ))
+  if (deltaTime >= 1 / fireball.spawnRate) {
+    if (fireball.customEffects == "randomColor") {
+      let randomColor =
+        "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
+      FireBallList.push(
+        createFireBall(fireball.Radius, fireball.Speed, randomColor)
+      );
+    } else {
+      FireBallList.push(
+        createFireBall(fireball.Radius, fireball.Speed, fireball.Color)
+      );
+    }
     lastFireballSpawnTime = currentTime;
   }
 
-  // Update the bobomb and fireball objects
-  bobomb.update();
-  FireBallList.forEach((fireBall, index) => {
-    fireBall.update();
+  // Spawn a new homing fireball if enough time has passed
+  const homingDeltaTime = currentTime - lastHomingFireballSpawnTime;
+  if (homingDeltaTime >= 1 / homingFireball.spawnRate) {
+    FireBallList.push(
+      createHomingFireball(
+        homingFireball.Radius,
+        homingFireball.Speed,
+        homingFireball.Color,
+        homingFireball.homingTime,
+        homingFireball.homingSpeed
+      )
+    );
+    lastHomingFireballSpawnTime = currentTime;
+  }
 
-    // Check for collisions with the bobomb
-    if (checkCollision(fireBall, bobomb)) {
+  bobomb.update();
+
+  for (let i = 0; i < FireBallList.length; i++) {
+    const currentFireball = FireBallList[i];
+    currentFireball.update();
+    if (currentFireball instanceof HomingFireball) {
+      currentFireball.update(deltaTime);
+    }
+    if (!currentFireball.isVisible()) {
+      FireBallList.splice(i, 1);
+    }
+    if (checkCollision(currentFireball, bobomb)) {
       score.stopTimer();
       showGameOverScreen(score.score);
     }
-
-    // Remove fireballs that are no longer visible on the screen
-    if (!fireBall.isVisible()) {
-      FireBallList.splice(index, 1);
-    }
-  });
-
-  // Check if the score is high enough to win the game
-  if (score.score == 30) {
+  }
+ if (score.score == 30) {
     score.stopTimer();
     showGameOverScreen("success");
   }
 }
+
+  // Check if the score is high enough to win the game
+ 
+
 
 // Draw the game objects
 function draw() {
