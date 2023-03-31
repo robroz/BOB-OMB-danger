@@ -92,7 +92,9 @@ function update() {
         homingFireball.Speed,
         homingFireball.Color,
         homingFireball.homingTime,
-        homingFireball.homingSpeed
+        homingFireball.homingSpeed,
+        homingFireball.blastradius,
+        homingFireball.explosionDuration
       )
     );
     lastHomingFireballSpawnTime = currentTime;
@@ -104,24 +106,22 @@ function update() {
     const currentFireball = FireBallList[i];
     currentFireball.update();
     if (currentFireball instanceof HomingFireball) {
-      currentFireball.update(deltaTime);
+      currentFireball.update();
     }
-    if (!currentFireball.isVisible()) {
+    if (!currentFireball.isVisible() || currentFireball.lifeTime == false) {
       FireBallList.splice(i, 1);
     }
     if (checkCollision(currentFireball, bobomb)) {
       score.stopTimer();
       showGameOverScreen(score.score);
     }
-  }
+  } 
+  // Check if the score is high enough to win the game
  if (score.score == 30) {
     score.stopTimer();
     showGameOverScreen("success");
   }
 }
-
-  // Check if the score is high enough to win the game
- 
 
 
 // Draw the game objects
